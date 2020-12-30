@@ -3,5 +3,17 @@
 // 在这个函数中，可以拿到我们给Ajax提供的配置对象
 $.ajaxPrefilter(function (options) {
     // 在发起真正的 Ajax 请求之前，统一拼接请求的根路径
-    options.url = 'http://ajax.frontend.itheima.net' + options.url
+    options.url = 'http://ajax.frontend.itheima.net' + options.url;
+    if (options.url.indexOf('/my/') != -1) {
+        options.headers = {
+            Authorization: localStorage.getItem('token') || ''
+        }
+    };
+    options.complete = function (res) {//无论成功还是失败，都会调用这个函数
+        console.log(res);
+        if (res.responseJSON.status !== 0 || res.responseJSON.message !== "获取用户基本信息成功！") {
+            localStorage.removeItem('token')//强制清空 token
+            location.href = '/login.html';//强制跳转
+        }
+    }
 })
