@@ -10,7 +10,7 @@ $.ajaxPrefilter(function (options) {
         }
     };
     options.complete = function (res) {//无论成功还是失败，都会调用这个函数
-        console.log(res);
+        // console.log(res);
         if (res.responseJSON.status === 1 && res.responseJSON.message === '身份认证失败！') {
             localStorage.removeItem('token')//强制清空 token
             location.href = '/login.html';//强制跳转
